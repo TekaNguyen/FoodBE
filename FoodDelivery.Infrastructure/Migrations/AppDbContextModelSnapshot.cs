@@ -101,7 +101,11 @@ namespace FoodDelivery.Infrastructure.Migrations
                         {
                             Id = "admin-user-id-001",
                             AccessFailedCount = 0,
+<<<<<<< HEAD
                             ConcurrencyStamp = "91a61ce9-1b24-4be6-be67-ab33f24be1fd",
+=======
+                            ConcurrencyStamp = "f5e170d4-1a93-4258-bdc3-2e075669c041",
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -109,9 +113,15 @@ namespace FoodDelivery.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
+<<<<<<< HEAD
                             PasswordHash = "AQAAAAIAAYagAAAAEL28ks6OFi6hj21dDhA4Pfpm3CDuzAPkEuwc6vKupSDC1y0luekPz/Un0/X6/J6w7w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "9f946504-5c83-4640-842a-3ff96dd0c18d",
+=======
+                            PasswordHash = "AQAAAAIAAYagAAAAED1+UlDXbX35/ACBChT69j/9EqBclp6PxhgMq2jkbru8me+nmcIfOgRv8rye4OwdCg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "589d6cd5-3dba-4e9c-a838-1a8594dfa7b4",
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         });
@@ -321,9 +331,12 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+<<<<<<< HEAD
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
 
@@ -417,11 +430,14 @@ namespace FoodDelivery.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+<<<<<<< HEAD
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                     b.Property<string>("DiscountType")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -445,11 +461,14 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
+<<<<<<< HEAD
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                     b.Property<int>("UsageLimit")
                         .HasColumnType("integer");
 
@@ -545,6 +564,7 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.ToTable("EmailTemplates");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("FoodDelivery.Domain.Entities.KitchenProductionLog", b =>
                 {
                     b.Property<int>("Id")
@@ -571,6 +591,8 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.ToTable("KitchenProductionLogs");
                 });
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             modelBuilder.Entity("FoodDelivery.Domain.Entities.NewsletterSubscription", b =>
                 {
                     b.Property<int>("Id")
@@ -1038,6 +1060,7 @@ namespace FoodDelivery.Infrastructure.Migrations
                         });
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("FoodDelivery.Domain.Entities.UserCoupon", b =>
                 {
                     b.Property<int>("Id")
@@ -1068,6 +1091,8 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.ToTable("UserCoupons");
                 });
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             modelBuilder.Entity("FoodDelivery.Domain.Entities.Wishlist", b =>
                 {
                     b.Property<string>("UserId")
@@ -1115,7 +1140,11 @@ namespace FoodDelivery.Infrastructure.Migrations
                         new
                         {
                             Id = "admin-role-id-001",
+<<<<<<< HEAD
                             ConcurrencyStamp = "e3e0182d-e439-4b40-acdb-6d630e07d4ac",
+=======
+                            ConcurrencyStamp = "731bc209-deb3-4170-b327-190dcf84e3c7",
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -1354,6 +1383,7 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.Navigation("OptionGroup");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("FoodDelivery.Domain.Entities.UserCoupon", b =>
                 {
                     b.HasOne("FoodDelivery.Domain.Entities.Coupon", "Coupon")
@@ -1373,6 +1403,8 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             modelBuilder.Entity("FoodDelivery.Domain.Entities.Wishlist", b =>
                 {
                     b.HasOne("FoodDelivery.Domain.Entities.Product", "Product")
@@ -1463,11 +1495,14 @@ namespace FoodDelivery.Infrastructure.Migrations
                     b.Navigation("Messages");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("FoodDelivery.Domain.Entities.Coupon", b =>
                 {
                     b.Navigation("UserCoupons");
                 });
 
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             modelBuilder.Entity("FoodDelivery.Domain.Entities.OptionGroup", b =>
                 {
                     b.Navigation("ProductOptions");

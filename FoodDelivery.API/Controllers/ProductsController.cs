@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using CsvHelper;
+<<<<<<< HEAD
 // using FoodDelivery.API.Services; // Nếu không dùng Service riêng thì comment lại
+=======
+using FoodDelivery.API.Services;
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
 
 namespace FoodDelivery.API.Controllers
 {
@@ -51,7 +55,11 @@ namespace FoodDelivery.API.Controllers
             };
 
             // 4. Phân trang
+<<<<<<< HEAD
             int pageSize = 16;
+=======
+            int pageSize = 10;
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             var products = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -61,11 +69,19 @@ namespace FoodDelivery.API.Controllers
         }
 
         // ==========================================
+<<<<<<< HEAD
         // 2. GET DETAIL (FULL OPTION)
+=======
+        // 2. GET DETAIL (FULL OPTION: Size/Topping)
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         // ==========================================
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDetailDto>> GetProductById(int id)
         {
+<<<<<<< HEAD
+=======
+            // 👇 Query "Full Option": Lấy Món -> Kèm Group -> Kèm Option con
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             var product = await context.Products
                 .Include(p => p.Category)
                 .Include(p => p.OptionGroups)
@@ -78,7 +94,11 @@ namespace FoodDelivery.API.Controllers
                 return NotFound(new { message = "Không tìm thấy món ăn này!" });
             }
 
+<<<<<<< HEAD
             // Map sang DTO
+=======
+            // 👇 Map sang DTO (Dùng cú pháp C# 12 Collection Expressions)
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             var productDto = new ProductDetailDto
             {
                 Id = product.Id,
@@ -87,12 +107,22 @@ namespace FoodDelivery.API.Controllers
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
                 StockQuantity = product.StockQuantity,
+<<<<<<< HEAD
+=======
+
+                // 🟢 THAY ĐỔI: Dùng [.. ] thay vì .ToList()
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                 OptionGroups = [.. product.OptionGroups.Select(g => new OptionGroupDto
                 {
                     Id = g.Id,
                     Name = g.Name,
                     IsRequired = g.IsRequired,
                     AllowMultiple = g.AllowMultiple,
+<<<<<<< HEAD
+=======
+                    
+                    // 🟢 THAY ĐỔI: Dùng [.. ] cho cả danh sách con
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                     Options = [.. g.ProductOptions.Select(o => new ProductOptionDto
                     {
                         Id = o.Id,
@@ -106,6 +136,7 @@ namespace FoodDelivery.API.Controllers
         }
 
         // ==========================================
+<<<<<<< HEAD
         // 3. CREATE PRODUCT (Hỗ trợ nhiều ảnh & Thứ tự ảnh)
         // ==========================================
         [HttpPost]
@@ -163,6 +194,38 @@ namespace FoodDelivery.API.Controllers
         // ==========================================
         // Trong ProductsController.cs
 
+=======
+        // 3. CREATE PRODUCT (Admin)
+        // ==========================================
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto request)
+        {
+            string imagePath = await SaveImage(request.ImageFile);
+
+            var product = new Product
+            {
+                Name = request.Name,
+                Description = request.Description ?? "",
+                Price = request.Price,
+                CategoryId = request.CategoryId,
+                ImageUrl = string.IsNullOrEmpty(imagePath) ? "/images/default.png" : imagePath,
+                StockQuantity = 0, // Mặc định 0
+                IsActive = true
+                // ⚠️ Không gán CreatedAt, để Database tự lo
+            };
+
+            context.Products.Add(product);
+            await context.SaveChangesAsync();
+
+            // Trả về ID vừa tạo
+            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, new { id = product.Id, name = product.Name });
+        }
+
+        // ==========================================
+        // 4. UPDATE PRODUCT (Admin)
+        // ==========================================
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id, [FromForm] UpdateProductDto request)
@@ -170,7 +233,11 @@ namespace FoodDelivery.API.Controllers
             var product = await context.Products.FindAsync(id);
             if (product == null) return NotFound("Không tìm thấy món ăn");
 
+<<<<<<< HEAD
             // Cập nhật thông tin cơ bản
+=======
+            // Cập nhật thông tin
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             if (!string.IsNullOrEmpty(request.Name)) product.Name = request.Name;
             if (!string.IsNullOrEmpty(request.Description)) product.Description = request.Description;
             if (request.Price.HasValue) product.Price = request.Price.Value;
@@ -183,6 +250,7 @@ namespace FoodDelivery.API.Controllers
                 if (product.StockQuantity > 0) product.IsActive = true;
             }
 
+<<<<<<< HEAD
             // 👇 XỬ LÝ ẢNH (Đã sửa để khớp với List<IFormFile>)
             if (request.ImageFiles != null && request.ImageFiles.Count > 0)
             {
@@ -211,6 +279,17 @@ namespace FoodDelivery.API.Controllers
                         product.ImageUrl += ";" + string.Join(";", newPaths);
                     }
                 }
+=======
+            // Xử lý ảnh mới
+            if (request.ImageFile != null)
+            {
+                // Xóa ảnh cũ (nếu không phải ảnh default)
+                if (!string.IsNullOrEmpty(product.ImageUrl) && !product.ImageUrl.Contains("default.png"))
+                {
+                    DeleteImageFile(product.ImageUrl);
+                }
+                product.ImageUrl = await SaveImage(request.ImageFile);
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             }
 
             await context.SaveChangesAsync();
@@ -241,7 +320,11 @@ namespace FoodDelivery.API.Controllers
         }
 
         // ==========================================
+<<<<<<< HEAD
         // 6. DELETE PRODUCT (Xóa sạch ảnh liên quan)
+=======
+        // 6. DELETE PRODUCT
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         // ==========================================
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
@@ -250,6 +333,7 @@ namespace FoodDelivery.API.Controllers
             var product = await context.Products.FindAsync(id);
             if (product == null) return NotFound("Không tìm thấy món ăn");
 
+<<<<<<< HEAD
             // Xóa tất cả ảnh vật lý
             if (!string.IsNullOrEmpty(product.ImageUrl))
             {
@@ -259,6 +343,11 @@ namespace FoodDelivery.API.Controllers
                 {
                     DeleteImageFile(img);
                 }
+=======
+            if (!string.IsNullOrEmpty(product.ImageUrl))
+            {
+                DeleteImageFile(product.ImageUrl);
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             }
 
             context.Products.Remove(product);
@@ -268,7 +357,11 @@ namespace FoodDelivery.API.Controllers
         }
 
         // ==========================================
+<<<<<<< HEAD
         // 7. IMPORT CSV
+=======
+        // 7. IMPORT CSV (Fixed DateTime issue)
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         // ==========================================
         [HttpPost("import-csv")]
         [Authorize(Roles = "Admin,SuperAdmin")]
@@ -294,6 +387,13 @@ namespace FoodDelivery.API.Controllers
                         Description = item.Description ?? "",
                         CategoryId = item.CategoryId,
                         ImageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/default.png" : item.ImageUrl,
+<<<<<<< HEAD
+=======
+
+                        // 👇 Cập nhật: KHÔNG GÁN CreatedAt, để SQL tự xử lý
+                        // CreatedAt = DateTime.UtcNow, <--- XÓA DÒNG NÀY
+
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                         StockQuantity = 0,
                         IsActive = true
                     });
@@ -324,24 +424,38 @@ namespace FoodDelivery.API.Controllers
         {
             if (file == null || file.Length == 0) return "";
 
+<<<<<<< HEAD
             // Thêm ".jfif" vào mảng này
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".jfif" };
+=======
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             var extension = Path.GetExtension(file.FileName).ToLower();
             if (!allowedExtensions.Contains(extension)) return "";
 
             var fileName = $"{Guid.NewGuid()}{extension}";
             var uploadFolder = Path.Combine(env.WebRootPath, "images");
+<<<<<<< HEAD
 
             if (!Directory.Exists(uploadFolder)) Directory.CreateDirectory(uploadFolder);
 
             var filePath = Path.Combine(uploadFolder, fileName);
 
+=======
+            var filePath = Path.Combine(uploadFolder, fileName);
+
+            if (!Directory.Exists(uploadFolder)) Directory.CreateDirectory(uploadFolder);
+
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
 
+<<<<<<< HEAD
             // Trả về đường dẫn chuẩn để Frontend dùng (Bắt đầu bằng /images/)
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             return $"/images/{fileName}";
         }
 
@@ -349,10 +463,14 @@ namespace FoodDelivery.API.Controllers
         {
             try
             {
+<<<<<<< HEAD
                 if (string.IsNullOrWhiteSpace(imageUrl) || imageUrl.Contains("default.png")) return;
 
                 // Xóa dấu / ở đầu nếu có để kết hợp đường dẫn
                 var relativePath = imageUrl.TrimStart('/').Replace("/", "\\");
+=======
+                var relativePath = imageUrl.TrimStart('/');
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
                 var filePath = Path.Combine(env.WebRootPath, relativePath);
 
                 if (System.IO.File.Exists(filePath))
@@ -362,8 +480,89 @@ namespace FoodDelivery.API.Controllers
             }
             catch
             {
+<<<<<<< HEAD
                 // Ignored - Lỗi xóa file không nên làm crash API
             }
         }
     }
 }
+=======
+                // Ignored
+            }
+        }
+
+        [HttpPost("{id}/upload-image")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
+        public async Task<IActionResult> UploadImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0) return BadRequest("Vui lòng chọn ảnh.");
+
+            var product = await context.Products.FindAsync(id);
+            if (product == null) return NotFound("Sản phẩm không tồn tại.");
+
+            // Tạo thư mục nếu chưa có
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "products");
+            if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+
+            // Tạo tên file duy nhất
+            var fileName = $"prod_{id}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            // Lưu file vào ổ cứng server
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Cập nhật đường dẫn vào database
+            product.ImageUrl = $"/uploads/products/{fileName}";
+            await context.SaveChangesAsync();
+
+            return Ok(new { imageUrl = product.ImageUrl });
+        }
+
+        [Route("api/[controller]")]
+        [ApiController]
+        // Sử dụng Primary Constructor để tiêm context và service vào (không cần gạch dưới _)
+        public class ProductController(AppDbContext context, IFileUploadService fileUploadService) : ControllerBase
+        {
+            [HttpPost]
+            [Authorize(Roles = "Admin")]
+            public async Task<IActionResult> CreateProduct([FromForm] ProductCreateDto dto)
+            {
+                try
+                {
+                    string? imageUrl = null;
+
+                    if (dto.ImageFile != null)
+                    {
+                        // Sử dụng fileUploadService trực tiếp từ constructor
+                        imageUrl = await fileUploadService.UploadFileAsync(dto.ImageFile, "products");
+                    }
+
+                    var product = new Product
+                    {
+                        Name = dto.Name,
+                        Price = dto.Price,
+                        // Sử dụng null-coalescing để tránh gán null vào trường không cho phép null trong DB
+                        ImageUrl = imageUrl ?? "",
+                        CategoryId = dto.CategoryId,
+                        Description = dto.Description ?? ""
+                    };
+
+                    context.Products.Add(product);
+                    await context.SaveChangesAsync();
+
+                    return Ok(new { message = "Thêm sản phẩm thành công", data = product });
+                }
+                catch (Exception ex)
+                {
+                    // Trả về đối tượng JSON để Frontend dễ xử lý hơn là chuỗi thuần
+                    return BadRequest(new { error = ex.Message });
+                }
+            }
+        }
+    }
+}
+
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29

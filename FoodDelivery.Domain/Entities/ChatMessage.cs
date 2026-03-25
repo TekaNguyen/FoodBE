@@ -21,6 +21,9 @@ namespace FoodDelivery.Domain.Entities
 
         [ForeignKey("ConversationId")]
         public Conversation? Conversation { get; set; }
+<<<<<<< HEAD
         public bool IsDeleted { get; set; } = false;
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
     }
 }

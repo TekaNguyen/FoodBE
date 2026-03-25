@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿//using FoodDelivery.Application.Interfaces;
 //using Microsoft.Extensions.Configuration;
 //using Net.payOS;
@@ -73,6 +74,9 @@
 //}
 
 using FoodDelivery.Application.Interfaces;
+=======
+﻿using FoodDelivery.Application.Interfaces;
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
 using Microsoft.Extensions.Configuration;
 using Net.payOS;
 using Net.payOS.Types;
@@ -83,7 +87,13 @@ namespace FoodDelivery.Infrastructure.Services
     {
         private readonly PayOS _payOS;
 
+<<<<<<< HEAD
         // 👇 CẤU HÌNH MẶC ĐỊNH (Sẽ được dùng nếu Controller không truyền link vào)
+=======
+        // 👇 CẤU HÌNH QUAN TRỌNG:
+        // 1. Dùng HTTP (không S) và Port 5292 cho khớp với máy bạn.
+        // 2. _cancelUrl TRỎ VỀ CÙNG LINK với _returnUrl để Controller xử lý logic Hủy/Hoàn kho.
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         private readonly string _returnUrl = "http://localhost:5292/api/orders/payos-return";
         private readonly string _cancelUrl = "http://localhost:5292/api/orders/payos-return";
 
@@ -97,6 +107,7 @@ namespace FoodDelivery.Infrastructure.Services
             _payOS = new PayOS(clientId, apiKey, checksumKey);
         }
 
+<<<<<<< HEAD
         // 👇 Hàm tạo link thanh toán (Hỗ trợ tùy chỉnh URL)
         public async Task<CreatePaymentResult> CreatePaymentLink(
             long orderCode,
@@ -105,6 +116,9 @@ namespace FoodDelivery.Infrastructure.Services
             List<ItemData> items,
             string? returnUrl = null,
             string? cancelUrl = null)
+=======
+        public async Task<CreatePaymentResult> CreatePaymentLink(long orderCode, int amount, string description, List<ItemData> items)
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         {
             // Tạo dữ liệu thanh toán
             var paymentData = new PaymentData(
@@ -112,16 +126,25 @@ namespace FoodDelivery.Infrastructure.Services
                 amount: amount,
                 description: description,
                 items: items,
+<<<<<<< HEAD
                 // 👇 Logic ưu tiên: Nếu có link truyền vào thì dùng, không thì dùng mặc định
                 cancelUrl: cancelUrl ?? _cancelUrl,
                 returnUrl: returnUrl ?? _returnUrl
+=======
+                cancelUrl: _cancelUrl, // Lúc này cancelUrl đã trỏ về đúng chỗ
+                returnUrl: _returnUrl
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
             );
 
             // Gọi thư viện tạo link
             return await _payOS.createPaymentLink(paymentData);
         }
 
+<<<<<<< HEAD
         // 👇 Hàm xác thực Webhook (Dùng cho sau này nếu cần)
+=======
+        // 👇 THÊM ĐOẠN CODE NÀY VÀO
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
         public WebhookData VerifyPaymentWebhookData(WebhookType webhookBody)
         {
             return _payOS.verifyPaymentWebhookData(webhookBody);

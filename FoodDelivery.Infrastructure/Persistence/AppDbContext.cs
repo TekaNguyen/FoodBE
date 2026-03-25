@@ -1,5 +1,8 @@
 ﻿using FoodDelivery.Domain.Entities;
+<<<<<<< HEAD
 //using FoodDelivery.Server.Models;
+=======
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -30,9 +33,14 @@ namespace FoodDelivery.Infrastructure.Persistence
         public DbSet<EmailSetting> EmailSettings { get; set; }
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
+<<<<<<< HEAD
         public DbSet<KitchenProductionLog> KitchenProductionLogs { get; set; }
         public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
         public DbSet<UserCoupon> UserCoupons { get; set; }
+=======
+
+        public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
+>>>>>>> 3a66952c690791e0f7b9f8d0898e8c787cfc5a29
 
         // 2. CẤU HÌNH WARNINGS
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
