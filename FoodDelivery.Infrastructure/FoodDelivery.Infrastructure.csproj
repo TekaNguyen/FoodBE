@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+
+		<PackageReference Include="payOS" Version="1.0.6" />
+<ProjectReference Include="..\FoodDelivery.Domain\FoodDelivery.Domain.csproj" />		
+	</ItemGroup>	
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FoodDelivery.Domain\FoodDelivery.Domain.csproj" />
+	  <ProjectReference Include="..\FoodDelivery.Application\FoodDelivery.Application.csproj" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+</Project>
